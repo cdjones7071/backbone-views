@@ -1,0 +1,27 @@
+*{
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+}
+#card-container{
+height: 100vh;
+width: 100%;	
+}
+.card{
+	height: 25vh;
+	width:25%;
+	border:solid 2px blue;
+	background-color: sapphire;
+	box-shadow: 10px 10px #20062D;
+	display: inline-block;
+
+}
+.cardInfo{
+	font-size: 14px;
+	color: #3ce8fd;
+	font-variant: small-caps;
+
+}
+
+
+
