@@ -1,60 +1,76 @@
+var Firstcard  
+var Secondcard 
+var clickCounter = 0
+var timer
 
-var firstCard;
-var secondCard;
-var firstCardColor;
-var secondCardColor;
-var numberedClicks = 0
 
+var eventDispatcher = _.clone(Backbone.Events)
 var Card = Backbone.View.extend({
- 
-  className: "card",
-   
-   events: {
 
-  	"click": "Cardflipping",
-   },
- 
+  events: {
+    "click": "flippedCard",
+  },
 
+    className:"another-card",
+
+  // also todo
   initialize: function(viewData) {
-  	
-    this.render(viewData)
- 
+  this.render(viewData)
   },
 
   render: function(viewData) {
-  	this.color = viewData.color;
-    this.hints = viewData.hints;
-    this.answers = viewData.answers
+      this.viewData = viewData
+      console.log(this.$el, this.viewData.color)
   },
 
-  Cardflipping: function() {
-  	numberedClicks = 1;
-    this.$el.css('background-color', this.color);
-     
-    if (numberedClicks === 1) {
-    	firstCard = this.$el;
-    	firstCardColor = this.$el.css( "background-color" );
+  showCard: function(viewData){
+    this.$el.css("background-color",viewData.color)
+
+  },
+
+  
+
+
+
+  flippedCard: function(){
+    this.$el.html( this.template(this.viewData) )
+    
+    eventDispatcher.trigger("clicked", this)
+    clickCounter += 1
+
+    if (clickCounter === 1){
+      card1 = this
+      this.$el.css("background-color", this.viewData.color)
+      
     }
-    if (numberedClicks === 2) {
-    	secondCard = this.$el;
-    	secondCardColor = this.$el.css( "background-color" );
-    	if (firstCardColor === secondCardColor) {
-    		firstCard.remove();
-    		secondCard.remove();
-    	} else {
-    		alert("wtffff");
-    	}
+    if (clickCounter === 2){
+      card2 = this
+      //console.log(this)
+      this.$el.css("background-color", this.viewData.color)
     }
-    if (numberedClicks === 3) {
+    if (clickCounter === 3 && card1 != card2) {
+      
+      if (card1.viewData.color === card2.viewData.color){
 
-    	numberedClicks = 0;
-    	$(".card").css('background-color', 'red')
+        card1.$el.hide()
+        card2.$el.hide()
+        clickCounter = 0
+      }
+      else {
+        card1.$el.css("background-color","white")
+        card2.$el.css("background-color","white")
+        clickCounter = 0
+
+      }
+  }
+    
+  else{
+    if (card1 === card2) {
+      card1.$el.css("background-color","white")
+      clickCounter= 0
     }
-   },
-
-   template: Handlebars.compile( $("#bank-template").html() )
-}) 
-
-
-
-
+  }
+},
+template: Handlebars.compile ( $("#card-template").html())
+  
+})
